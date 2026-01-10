@@ -137,16 +137,16 @@ const HeroSection = () => {
         </div>
 
         {/* Image Indicators */}
-        <div className="absolute bottom-32 flex space-x-2">
+        <div className="absolute bottom-24 lg:bottom-32 flex space-x-1.5 lg:space-x-2">
           {heroImages.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentImage(index)}
               className={cn(
-                "w-2 h-2 rounded-full transition-all duration-300",
+                "h-1.5 lg:h-2 rounded-full transition-all duration-300",
                 currentImage === index
-                  ? "w-8 bg-primary"
-                  : "bg-foreground/30 hover:bg-foreground/50"
+                  ? "w-5 lg:w-8 bg-primary"
+                  : "w-1.5 lg:w-2 bg-foreground/30 hover:bg-foreground/50"
               )}
               aria-label={`Go to slide ${index + 1}`}
             />
