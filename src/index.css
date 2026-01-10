@@ -417,4 +417,109 @@
   .dark .glass-card {
     @apply bg-card/50 backdrop-blur-xl border border-border/30;
   }
+
+  /* Mobile-specific: Hide floral pattern on small screens */
+  @media (max-width: 640px) {
+    .floral-pattern-mobile {
+      background-image: none !important;
+    }
+  }
+
+  /* Safe area padding for mobile devices */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Button ripple effect */
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-ripple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, hsl(0 0% 100% / 0.3) 0%, transparent 70%);
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.3s ease-out;
+  }
+  
+  .btn-ripple:active::after {
+    transform: scale(2);
+    opacity: 1;
+    transition: transform 0.2s ease-out, opacity 0.1s ease-out;
+  }
+
+  /* Card tap elevation */
+  .card-tap {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  
+  .card-tap:active {
+    transform: scale(0.98);
+  }
+
+  /* Icon pulse animation on hover */
+  @keyframes icon-pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  .icon-pulse {
+    transition: transform 0.3s ease;
+  }
+
+  .group:hover .icon-pulse,
+  .icon-pulse:hover {
+    animation: icon-pulse 0.6s ease-in-out;
+  }
+
+  /* Theme toggle animation */
+  .theme-toggle-animate {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .theme-toggle-animate:active {
+    transform: rotate(180deg) scale(0.9);
+  }
+
+  /* Active scale for touch interactions */
+  .active\:scale-98:active {
+    transform: scale(0.98);
+  }
+
+  .active\:scale-95:active {
+    transform: scale(0.95);
+  }
+
+  /* Smooth 60fps scrolling */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Touch-friendly tap targets */
+  @media (max-width: 1024px) {
+    button, a, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
