@@ -67,6 +67,11 @@ export default {
           DEFAULT: "hsl(var(--charcoal))",
           light: "hsl(var(--charcoal-light))",
         },
+        rose: {
+          DEFAULT: "hsl(var(--rose))",
+          light: "hsl(var(--rose-light))",
+        },
+        blush: "hsl(var(--blush))",
       },
       fontFamily: {
         serif: ["Playfair Display", "serif"],
