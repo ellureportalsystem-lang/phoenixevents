@@ -11,59 +11,88 @@
 
 @layer base {
   :root {
-    /* Core Colors - Luxury Dark Theme */
-    --background: 0 0% 4%;
-    --foreground: 40 20% 95%;
+    /* Light Theme - Premium Wedding/Celebratory Feel */
+    /* Background: Soft White / Warm Ivory */
+    --background: 30 50% 99%;
+    --foreground: 220 15% 20%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 40 20% 95%;
+    /* Cards: Pure white with warmth */
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 20%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 40 20% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 20%;
 
-    /* Gold Primary */
-    --primary: 43 74% 49%;
-    --primary-foreground: 0 0% 4%;
+    /* Primary: Rose Pink for CTAs and highlights */
+    --primary: 347 77% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Champagne Secondary */
-    --secondary: 40 30% 20%;
-    --secondary-foreground: 40 20% 95%;
+    /* Secondary: Soft Blush Pink */
+    --secondary: 350 100% 97%;
+    --secondary-foreground: 220 15% 20%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 40 10% 60%;
+    --muted: 350 30% 96%;
+    --muted-foreground: 220 10% 45%;
 
-    /* Gold Accent */
+    /* Accent: Champagne Gold (subtle) */
     --accent: 43 74% 49%;
-    --accent-foreground: 0 0% 4%;
+    --accent-foreground: 220 15% 20%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 20%;
-    --input: 40 20% 20%;
-    --ring: 43 74% 49%;
+    --border: 350 20% 90%;
+    --input: 350 20% 90%;
+    --ring: 347 77% 50%;
 
     --radius: 0.5rem;
 
-    /* Custom Phoenix Colors */
+    /* Custom Phoenix Colors - Light Theme */
     --gold: 43 74% 49%;
     --gold-light: 43 80% 65%;
     --gold-dark: 43 70% 35%;
     --champagne: 40 40% 80%;
-    --charcoal: 0 0% 12%;
-    --charcoal-light: 0 0% 18%;
+    --charcoal: 220 15% 20%;
+    --charcoal-light: 220 10% 30%;
+    --rose: 347 77% 50%;
+    --rose-light: 350 100% 97%;
+    --blush: 350 50% 95%;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 40 20% 95%;
-    --sidebar-primary: 43 74% 49%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 40 20% 95%;
-    --sidebar-border: 40 20% 15%;
-    --sidebar-ring: 43 74% 49%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 15% 20%;
+    --sidebar-primary: 347 77% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 350 30% 96%;
+    --sidebar-accent-foreground: 220 15% 20%;
+    --sidebar-border: 350 20% 90%;
+    --sidebar-ring: 347 77% 50%;
+  }
+
+  .light {
+    /* Light Theme - Premium Wedding/Celebratory Feel */
+    --background: 30 50% 99%;
+    --foreground: 220 15% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 20%;
+    --primary: 347 77% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 350 100% 97%;
+    --secondary-foreground: 220 15% 20%;
+    --muted: 350 30% 96%;
+    --muted-foreground: 220 10% 45%;
+    --accent: 43 74% 49%;
+    --accent-foreground: 220 15% 20%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 350 20% 90%;
+    --input: 350 20% 90%;
+    --ring: 347 77% 50%;
   }
 
   .dark {
+    /* Dark Theme - Luxury Cinematic Feel */
     --background: 0 0% 4%;
     --foreground: 40 20% 95%;
     --card: 0 0% 8%;
@@ -83,6 +112,26 @@
     --border: 40 20% 20%;
     --input: 40 20% 20%;
     --ring: 43 74% 49%;
+
+    /* Custom Phoenix Colors - Dark Theme */
+    --gold: 43 74% 49%;
+    --gold-light: 43 80% 65%;
+    --gold-dark: 43 70% 35%;
+    --champagne: 40 40% 80%;
+    --charcoal: 0 0% 12%;
+    --charcoal-light: 0 0% 18%;
+    --rose: 347 77% 50%;
+    --rose-light: 347 60% 30%;
+    --blush: 350 30% 15%;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 40 20% 95%;
+    --sidebar-primary: 43 74% 49%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 40 20% 95%;
+    --sidebar-border: 40 20% 15%;
+    --sidebar-ring: 43 74% 49%;
   }
 }
 
@@ -242,28 +291,111 @@
     @apply absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent;
   }
 
-  /* Glass effect */
+  /* Glass effect - Theme aware */
   .glass {
-    background: hsl(0 0% 8% / 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(40 20% 20% / 0.5);
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
   }
 
-  /* Scrollbar styling */
+  /* Theme transition */
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Light theme specific enhancements */
+  .light {
+    /* Soft shadows for light theme */
+    --shadow-soft: 0 4px 20px -4px hsl(350 30% 50% / 0.1);
+    --shadow-card: 0 8px 30px -8px hsl(350 30% 50% / 0.15);
+  }
+
+  .light .hover-lift:hover {
+    box-shadow: 0 20px 40px hsl(350 30% 50% / 0.15);
+  }
+
+  .light .hover-glow:hover {
+    box-shadow: 0 0 30px hsl(347 77% 50% / 0.2);
+  }
+
+  /* Rose gradient text for light theme */
+  .light .text-gradient-gold {
+    background: linear-gradient(135deg, hsl(347 77% 50%) 0%, hsl(347 60% 40%) 50%, hsl(43 74% 49%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Rose border gradient for light theme */
+  .light .border-gradient-gold {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+                linear-gradient(135deg, hsl(347 77% 50%), hsl(350 80% 70%), hsl(43 74% 49%)) border-box;
+  }
+
+  /* Light theme scrollbar */
+  .light ::-webkit-scrollbar-track {
+    background: hsl(350 30% 96%);
+  }
+
+  .light ::-webkit-scrollbar-thumb {
+    background: hsl(347 77% 50% / 0.4);
+  }
+
+  .light ::-webkit-scrollbar-thumb:hover {
+    background: hsl(347 77% 50% / 0.6);
+  }
+
+  /* Dark theme scrollbar */
+  .dark ::-webkit-scrollbar-track {
+    background: hsl(0 0% 8%);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(43 74% 49% / 0.5);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(43 74% 49% / 0.7);
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
   }
 
-  ::-webkit-scrollbar-track {
-    background: hsl(0 0% 8%);
+  /* Floral pattern overlay for light theme (subtle) */
+  .light .floral-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e11d48' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
-  ::-webkit-scrollbar-thumb {
-    background: hsl(43 74% 49% / 0.5);
-    border-radius: 4px;
+  /* Elegant separator for light theme */
+  .light .elegant-separator {
+    background: linear-gradient(90deg, transparent, hsl(43 74% 49% / 0.5), transparent);
+    height: 1px;
   }
 
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(43 74% 49% / 0.7);
+  .dark .elegant-separator {
+    background: linear-gradient(90deg, transparent, hsl(43 74% 49% / 0.3), transparent);
+    height: 1px;
+  }
+
+  /* Wave divider for light theme */
+  .wave-divider {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wave-divider::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%23fff1f2' d='M0,40 C360,100 720,0 1080,50 C1260,75 1380,60 1440,40 L1440,100 L0,100 Z'/%3E%3C/svg%3E");
+    background-size: cover;
+  }
+
+  .dark .wave-divider::after {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100'%3E%3Cpath fill='%230a0a0a' d='M0,40 C360,100 720,0 1080,50 C1260,75 1380,60 1440,40 L1440,100 L0,100 Z'/%3E%3C/svg%3E");
+    background-size: cover;
   }
 }
