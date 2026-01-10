@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/ThemeProvider";
 
 const heroImages = [
   "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80",
@@ -13,6 +14,7 @@ const heroImages = [
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -29,6 +31,24 @@ const HeroSection = () => {
       behavior: "smooth",
     });
   };
+
+  // Theme-specific content
+  const heroContent = {
+    light: {
+      tagline: "Creating Magical Celebrations",
+      headline: "Celebrating Love, Life",
+      highlight: "& Moments",
+      description: "Where dreams blossom into reality. We design enchanting celebrations that capture the essence of your most precious moments.",
+    },
+    dark: {
+      tagline: "Premium Event Management",
+      headline: "Turning Moments into",
+      highlight: "Grand Memories",
+      description: "Where elegance meets celebration. We craft extraordinary experiences that transform your vision into unforgettable events.",
+    },
+  };
+
+  const content = heroContent[theme];
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -49,9 +69,19 @@ const HeroSection = () => {
         </div>
       ))}
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-background/70" />
+      {/* Gradient Overlay - Theme aware */}
+      <div className={cn(
+        "absolute inset-0 transition-colors duration-500",
+        theme === "light"
+          ? "bg-gradient-to-b from-white/70 via-white/50 to-white"
+          : "bg-gradient-to-b from-background/60 via-background/40 to-background"
+      )} />
+      <div className={cn(
+        "absolute inset-0 transition-colors duration-500",
+        theme === "light"
+          ? "bg-gradient-to-r from-rose-50/80 via-transparent to-rose-50/80"
+          : "bg-gradient-to-r from-background/70 via-transparent to-background/70"
+      )} />
 
       {/* Content */}
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
@@ -63,15 +93,21 @@ const HeroSection = () => {
         >
           <div className="space-y-4">
             <p className="text-primary font-sans text-sm md:text-base tracking-[0.3em] uppercase opacity-0 animate-fade-in stagger-1">
-              Premium Event Management
+              {content.tagline}
             </p>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight opacity-0 animate-fade-in stagger-2">
-              Turning Moments into{" "}
-              <span className="text-gradient-gold">Grand Memories</span>
+              {content.headline}{" "}
+              <span className={cn(
+                "bg-clip-text text-transparent transition-all duration-500",
+                theme === "light"
+                  ? "bg-gradient-to-r from-rose-500 via-pink-400 to-rose-400"
+                  : "bg-gradient-to-r from-gold-light via-gold to-gold-dark"
+              )}>
+                {content.highlight}
+              </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-sans font-light opacity-0 animate-fade-in stagger-3">
-              Where elegance meets celebration. We craft extraordinary experiences 
-              that transform your vision into unforgettable events.
+              {content.description}
             </p>
           </div>
 
