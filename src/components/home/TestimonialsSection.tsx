@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/ThemeProvider";
+import MotionSection from "@/components/ui/MotionSection";
 
 const testimonials = [
   {
@@ -36,11 +39,15 @@ const testimonials = [
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [direction, setDirection] = useState(0);
+  const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!isAutoPlaying) return;
 
     const interval = setInterval(() => {
+      setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, 6000);
 
@@ -49,105 +56,177 @@ const TestimonialsSection = () => {
 
   const goToPrevious = () => {
     setIsAutoPlaying(false);
+    setDirection(-1);
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
   const goToNext = () => {
     setIsAutoPlaying(false);
+    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
+      scale: 0.95,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 100 : -100,
+      opacity: 0,
+      scale: 0.95,
+    }),
+  };
+
   return (
-    <section className="py-24 bg-card relative overflow-hidden">
+    <section className={cn(
+      "py-24 relative overflow-hidden",
+      theme === "light" ? "bg-card" : "bg-card"
+    )}>
       {/* Decorative Quote */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 opacity-5">
+      <motion.div
+        className="absolute top-12 left-1/2 -translate-x-1/2 opacity-5"
+        animate={{ scale: [1, 1.05, 1], rotate: [0, 2, 0] }}
+        transition={{ duration: 8, repeat: Infinity }}
+      >
         <Quote size={200} className="text-primary" />
-      </div>
+      </motion.div>
 
       <div className="container mx-auto px-4 lg:px-8 relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <MotionSection className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <p className="text-primary font-sans text-sm tracking-[0.3em] uppercase">
             Client Stories
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold">
             What Our Clients <span className="text-gradient-gold">Say</span>
           </h2>
-        </div>
+        </MotionSection>
 
         {/* Testimonial Carousel */}
         <div className="max-w-4xl mx-auto relative">
           {/* Navigation Buttons */}
-          <button
+          <motion.button
             onClick={goToPrevious}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 w-12 h-12 rounded-full border border-border bg-background flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors z-10"
+            className={cn(
+              "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 w-12 h-12 rounded-full border flex items-center justify-center transition-all z-10",
+              theme === "light"
+                ? "border-rose-200 bg-white/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg"
+                : "border-border bg-background/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:border-primary"
+            )}
             aria-label="Previous testimonial"
+            whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
           >
             <ChevronLeft size={24} />
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 w-12 h-12 rounded-full border border-border bg-background flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors z-10"
+            className={cn(
+              "absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 w-12 h-12 rounded-full border flex items-center justify-center transition-all z-10",
+              theme === "light"
+                ? "border-rose-200 bg-white/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg"
+                : "border-border bg-background/80 backdrop-blur-sm text-muted-foreground hover:text-primary hover:border-primary"
+            )}
             aria-label="Next testimonial"
+            whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
           >
             <ChevronRight size={24} />
-          </button>
+          </motion.button>
 
           {/* Testimonial Content */}
-          <div className="text-center px-8 md:px-16">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={testimonial.name}
+          <div className="text-center px-8 md:px-16 min-h-[320px] relative">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={shouldReduceMotion ? {} : slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.3 },
+                  scale: { duration: 0.3 },
+                }}
                 className={cn(
-                  "transition-all duration-500",
-                  index === currentIndex
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8 absolute inset-0 pointer-events-none"
+                  "p-8 md:p-12 rounded-3xl",
+                  theme === "light"
+                    ? "bg-white/70 backdrop-blur-xl border border-rose-100/50 shadow-[0_8px_40px_-12px_hsl(350_30%_50%/0.1)]"
+                    : "bg-card/50 backdrop-blur-xl border border-border/30"
                 )}
               >
                 {/* Avatar */}
-                <div className="mb-8">
+                <motion.div
+                  className="mb-6"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                >
                   <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-20 h-20 rounded-full mx-auto object-cover border-2 border-primary"
+                    src={testimonials[currentIndex].image}
+                    alt={testimonials[currentIndex].name}
+                    className={cn(
+                      "w-20 h-20 rounded-full mx-auto object-cover border-3",
+                      theme === "light" ? "border-primary" : "border-primary"
+                    )}
                   />
-                </div>
+                </motion.div>
 
                 {/* Quote */}
-                <blockquote className="text-lg md:text-xl text-foreground font-serif italic leading-relaxed mb-8">
-                  "{testimonial.quote}"
-                </blockquote>
+                <motion.blockquote
+                  className="text-lg md:text-xl text-foreground font-serif italic leading-relaxed mb-6"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.4 }}
+                >
+                  "{testimonials[currentIndex].quote}"
+                </motion.blockquote>
 
                 {/* Client Info */}
-                <div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                >
                   <p className="text-foreground font-semibold font-sans">
-                    {testimonial.name}
+                    {testimonials[currentIndex].name}
                   </p>
                   <p className="text-primary text-sm font-sans">
-                    {testimonial.event}
+                    {testimonials[currentIndex].event}
                   </p>
-                </div>
-              </div>
-            ))}
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Dots */}
-          <div className="flex justify-center space-x-2 mt-12">
+          <div className="flex justify-center space-x-2 mt-8">
             {testimonials.map((_, index) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => {
                   setIsAutoPlaying(false);
+                  setDirection(index > currentIndex ? 1 : -1);
                   setCurrentIndex(index);
                 }}
                 className={cn(
-                  "w-2 h-2 rounded-full transition-all duration-300",
+                  "h-2 rounded-full transition-all duration-300",
                   index === currentIndex
                     ? "w-8 bg-primary"
-                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                 )}
                 aria-label={`Go to testimonial ${index + 1}`}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.2 }}
               />
             ))}
           </div>

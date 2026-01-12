@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
-import AnimatedSection from "@/components/ui/AnimatedSection";
+import MotionSection, { StaggerContainer, StaggerItem } from "@/components/ui/MotionSection";
 import Lightbox from "@/components/ui/Lightbox";
 
 const events = [
@@ -64,6 +65,7 @@ const events = [
 
 const EventsSection = () => {
   const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -77,8 +79,7 @@ const EventsSection = () => {
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
       
-      // Calculate active index for mobile
-      const cardWidth = 300; // Approximate card width + gap
+      const cardWidth = 300;
       const newIndex = Math.round(scrollLeft / cardWidth);
       setActiveIndex(Math.min(newIndex, events.length - 1));
     }
@@ -110,42 +111,64 @@ const EventsSection = () => {
 
   return (
     <section className={cn(
-      "py-12 lg:py-16 relative overflow-hidden",
-      theme === "light" ? "bg-secondary floral-pattern-mobile" : "bg-background"
+      "py-14 lg:py-20 relative overflow-hidden",
+      theme === "light" ? "bg-secondary" : "bg-background"
     )}>
       {/* Wave Divider Top */}
       <div className="absolute top-0 left-0 right-0 h-12 lg:h-16 overflow-hidden">
         <svg className="absolute bottom-0 w-full h-full" viewBox="0 0 1440 60" preserveAspectRatio="none">
           <path 
-            fill={theme === "light" ? "hsl(30 50% 99%)" : "hsl(0 0% 4%)"}
+            fill={theme === "light" ? "hsl(35 45% 97%)" : "hsl(0 0% 3%)"}
             d="M0,60 C360,20 720,60 1080,30 C1260,15 1380,40 1440,60 L1440,0 L0,0 Z"
           />
         </svg>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative pt-6 lg:pt-8">
+      <div className="container mx-auto px-4 lg:px-8 relative pt-8 lg:pt-10">
         {/* Header */}
-        <AnimatedSection className="text-center max-w-xl mx-auto mb-8 lg:mb-12 space-y-3">
-          <p className="text-primary font-sans text-xs tracking-[0.3em] uppercase">
+        <MotionSection className="text-center max-w-xl mx-auto mb-10 lg:mb-14 space-y-3">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-primary font-sans text-xs tracking-[0.3em] uppercase"
+          >
             What We Create
-          </p>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold">
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold"
+          >
             Our Signature <span className="text-gradient-gold">Events</span>
-          </h2>
-          <div className={cn(
-            "w-12 lg:w-16 h-0.5 mx-auto mt-3",
-            theme === "light" 
-              ? "bg-gradient-to-r from-transparent via-rose-400 to-transparent" 
-              : "bg-gradient-to-r from-transparent via-gold to-transparent"
-          )} />
-          <p className="text-muted-foreground font-sans text-sm max-w-md mx-auto">
+          </motion.h2>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className={cn(
+              "w-14 lg:w-20 h-0.5 mx-auto mt-3",
+              theme === "light" 
+                ? "bg-gradient-to-r from-transparent via-primary to-transparent" 
+                : "bg-gradient-to-r from-transparent via-gold to-transparent"
+            )}
+          />
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="text-muted-foreground font-sans text-sm max-w-md mx-auto"
+          >
             From intimate gatherings to grand celebrations
-          </p>
-        </AnimatedSection>
+          </motion.p>
+        </MotionSection>
 
         {/* Mobile Carousel Navigation */}
-        <div className="lg:hidden flex items-center justify-between mb-4">
-          {/* Dots indicator */}
+        <div className="lg:hidden flex items-center justify-between mb-5">
           <div className="flex gap-1.5">
             {events.map((_, idx) => (
               <span
@@ -153,45 +176,46 @@ const EventsSection = () => {
                 className={cn(
                   "h-1.5 rounded-full transition-all duration-300",
                   idx === activeIndex 
-                    ? cn("w-6", theme === "light" ? "bg-primary" : "bg-gold")
+                    ? cn("w-6", theme === "light" ? "bg-primary" : "bg-primary")
                     : "w-1.5 bg-muted-foreground/30"
                 )}
               />
             ))}
           </div>
           
-          {/* Arrow buttons */}
           <div className="flex gap-2">
-            <button 
+            <motion.button 
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
               className={cn(
-                "p-2.5 rounded-full transition-all active:scale-95",
+                "p-2.5 rounded-full transition-all",
                 canScrollLeft 
                   ? cn(
                       "text-primary",
-                      theme === "light" ? "bg-rose-50" : "bg-primary/10"
+                      theme === "light" ? "bg-white shadow-md" : "bg-card"
                     )
                   : "bg-muted text-muted-foreground/40"
               )}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
             >
               <ChevronLeft size={18} />
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={() => scroll('right')}
               disabled={!canScrollRight}
               className={cn(
-                "p-2.5 rounded-full transition-all active:scale-95",
+                "p-2.5 rounded-full transition-all",
                 canScrollRight 
                   ? cn(
                       "text-primary",
-                      theme === "light" ? "bg-rose-50" : "bg-primary/10"
+                      theme === "light" ? "bg-white shadow-md" : "bg-card"
                     )
                   : "bg-muted text-muted-foreground/40"
               )}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
             >
               <ChevronRight size={18} />
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -199,129 +223,167 @@ const EventsSection = () => {
         <div 
           ref={scrollRef}
           onScroll={checkScroll}
-          className="flex lg:grid lg:grid-cols-3 gap-4 lg:gap-5 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
+          className="flex lg:grid lg:grid-cols-3 gap-5 lg:gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
         >
           {events.map((event, index) => (
-            <AnimatedSection
+            <StaggerItem
               key={event.title}
-              animation="fade-up"
-              delay={index * 100}
               className={cn(
-                "group relative flex-shrink-0 w-[85vw] max-w-[300px] lg:w-auto lg:max-w-none snap-center"
+                "flex-shrink-0 w-[85vw] max-w-[300px] lg:w-auto lg:max-w-none snap-center"
               )}
             >
-              {/* Editorial Card */}
-              <div className={cn(
-                "relative h-[340px] lg:h-[380px] rounded-2xl overflow-hidden transition-all duration-500 card-tap",
-                theme === "light" 
-                  ? "bg-white shadow-[0_4px_20px_-4px_hsl(350_30%_50%/0.1)]" 
-                  : "bg-card shadow-[0_4px_20px_-4px_hsl(0_0%_0%/0.3)]",
-                "lg:hover:shadow-[0_16px_50px_-8px_hsl(347_77%_50%/0.2)]"
-              )}>
-                {/* Image - Top 70% */}
-                <div className="relative h-[70%] overflow-hidden">
-                  <img
+              <motion.div
+                className={cn(
+                  "group relative h-[360px] lg:h-[400px] rounded-3xl overflow-hidden transition-all duration-500",
+                  theme === "light" 
+                    ? "bg-white shadow-[0_4px_24px_-4px_hsl(350_30%_50%/0.1)]" 
+                    : "bg-card shadow-[0_4px_24px_-4px_hsl(0_0%_0%/0.3)]"
+                )}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                whileHover={shouldReduceMotion ? {} : {
+                  y: -8,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                {/* Hover shadow effect */}
+                <div className={cn(
+                  "absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10",
+                  theme === "light"
+                    ? "shadow-[0_20px_60px_-12px_hsl(350_65%_55%/0.2)]"
+                    : "shadow-[0_20px_60px_-12px_hsl(40_72%_52%/0.15)]"
+                )} />
+
+                {/* Image - Top 68% */}
+                <div className="relative h-[68%] overflow-hidden">
+                  <motion.img
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover transition-transform duration-700 lg:group-hover:scale-105"
+                    className="w-full h-full object-cover"
+                    whileHover={shouldReduceMotion ? {} : { scale: 1.08, transition: { duration: 0.7 } }}
                     loading="lazy"
                   />
                   
                   {/* Lightbox trigger overlay */}
-                  <button
+                  <motion.button
                     onClick={(e) => openLightbox(event.gallery, e)}
                     className={cn(
-                      "absolute inset-0 flex items-center justify-center transition-all duration-500",
-                      "opacity-0 lg:group-hover:opacity-100",
+                      "absolute inset-0 flex items-center justify-center",
                       theme === "light"
-                        ? "bg-rose-500/60"
+                        ? "bg-primary/50"
                         : "bg-background/60"
                     )}
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
                   >
-                    <div className={cn(
-                      "p-3 rounded-full",
-                      theme === "light" ? "bg-white/90" : "bg-card/90"
-                    )}>
+                    <motion.div
+                      className={cn(
+                        "p-4 rounded-full",
+                        theme === "light" ? "bg-white/95" : "bg-card/95"
+                      )}
+                      whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
+                    >
                       <ZoomIn className="w-6 h-6 text-primary" />
-                    </div>
-                  </button>
+                    </motion.div>
+                  </motion.button>
 
                   {/* Mobile tap area for lightbox */}
-                  <button
+                  <motion.button
                     onClick={(e) => openLightbox(event.gallery, e)}
-                    className="lg:hidden absolute top-3 right-3 p-2 rounded-full bg-black/30 text-white active:scale-95"
+                    className="lg:hidden absolute top-3 right-3 p-2.5 rounded-full bg-black/40 text-white backdrop-blur-sm"
                     aria-label="View gallery"
+                    whileTap={shouldReduceMotion ? {} : { scale: 0.9 }}
                   >
                     <ZoomIn size={16} />
-                  </button>
+                  </motion.button>
                 </div>
 
                 {/* Content Panel */}
                 <Link 
                   to="/events"
                   className={cn(
-                    "absolute bottom-0 left-0 right-0 h-[35%] p-4 lg:p-5 transition-all duration-500",
+                    "absolute bottom-0 left-0 right-0 h-[36%] p-5 lg:p-6 transition-all duration-500",
                     "flex flex-col justify-between",
                     theme === "light" ? "bg-white" : "bg-card"
                   )}
                 >
                   {/* Gold dot + Title */}
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
-                      <span className={cn(
-                        "w-1.5 h-1.5 rounded-full icon-pulse",
-                        theme === "light" ? "bg-gold" : "bg-primary"
-                      )} />
-                      <h3 className="text-base lg:text-lg font-serif font-semibold text-foreground lg:group-hover:text-primary transition-colors">
+                      <motion.span
+                        className={cn(
+                          "w-2 h-2 rounded-full",
+                          theme === "light" ? "bg-accent" : "bg-primary"
+                        )}
+                        animate={shouldReduceMotion ? {} : { scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      <h3 className="text-lg lg:text-xl font-serif font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {event.title}
                       </h3>
                     </div>
-                    <p className="text-xs text-muted-foreground pl-3.5">
+                    <p className="text-sm text-muted-foreground pl-4">
                       {event.description}
                     </p>
                   </div>
 
                   {/* Explore Link */}
-                  <div className="flex items-center text-primary text-xs font-medium opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transform lg:translate-y-2 lg:group-hover:translate-y-0 transition-all duration-300">
+                  <motion.div
+                    className="flex items-center text-primary text-sm font-medium"
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{ x: 4 }}
+                  >
                     <span>Explore</span>
-                    <ArrowRight size={14} className="ml-1" />
-                  </div>
+                    <ArrowRight size={16} className="ml-1" />
+                  </motion.div>
 
                   {/* Bottom accent line */}
-                  <div className={cn(
-                    "absolute bottom-0 left-0 right-0 h-0.5 transform lg:scale-x-0 lg:group-hover:scale-x-100 transition-transform duration-500 origin-left",
-                    theme === "light" 
-                      ? "bg-gradient-to-r from-rose-400 via-rose-300 to-transparent" 
-                      : "bg-gradient-to-r from-primary via-gold-light to-transparent"
-                  )} />
+                  <motion.div
+                    className={cn(
+                      "absolute bottom-0 left-0 right-0 h-1 origin-left",
+                      theme === "light" 
+                        ? "bg-gradient-to-r from-primary via-primary/70 to-accent" 
+                        : "bg-gradient-to-r from-primary via-gold to-gold-light"
+                    )}
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.4 }}
+                  />
                 </Link>
-              </div>
-            </AnimatedSection>
+              </motion.div>
+            </StaggerItem>
           ))}
         </div>
 
         {/* View All Button */}
-        <AnimatedSection animation="fade-up" delay={600} className="text-center mt-8 lg:mt-10">
-          <Link
-            to="/events"
-            className={cn(
-              "inline-flex items-center gap-2 px-6 py-3 rounded-full font-sans text-sm tracking-wide transition-all duration-300 active:scale-95 btn-ripple",
-              theme === "light"
-                ? "bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20"
-                : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            )}
+        <MotionSection animation="fade-up" delay={0.4} className="text-center mt-10 lg:mt-14">
+          <motion.div
+            whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
           >
-            View All Events
-            <ArrowRight size={16} />
-          </Link>
-        </AnimatedSection>
+            <Link
+              to="/events"
+              className={cn(
+                "inline-flex items-center gap-2 px-8 py-4 rounded-full font-sans text-sm tracking-wide transition-all duration-300",
+                theme === "light"
+                  ? "bg-primary text-white shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30"
+                  : "bg-primary text-primary-foreground shadow-xl shadow-primary/20"
+              )}
+            >
+              View All Events
+              <ArrowRight size={16} />
+            </Link>
+          </motion.div>
+        </MotionSection>
       </div>
 
       {/* Wave Divider Bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-12 lg:h-16 overflow-hidden">
         <svg className="absolute top-0 w-full h-full" viewBox="0 0 1440 60" preserveAspectRatio="none">
           <path 
-            fill={theme === "light" ? "hsl(0 0% 100%)" : "hsl(0 0% 8%)"}
+            fill={theme === "light" ? "hsl(30 40% 99%)" : "hsl(0 5% 7%)"}
             d="M0,0 C360,40 720,0 1080,30 C1260,45 1380,20 1440,0 L1440,60 L0,60 Z"
           />
         </svg>

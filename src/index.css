@@ -11,127 +11,127 @@
 
 @layer base {
   :root {
-    /* Light Theme - Premium Wedding/Celebratory Feel */
-    /* Background: Soft White / Warm Ivory */
-    --background: 30 50% 99%;
-    --foreground: 220 15% 20%;
+    /* Light Theme - Warm Cream & Dusty Rose */
+    /* Inspired by Indian wedding aesthetics - soft celebration */
+    --background: 35 45% 97%;
+    --foreground: 25 20% 18%;
 
     /* Cards: Pure white with warmth */
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
+    --card: 30 40% 99%;
+    --card-foreground: 25 20% 18%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover: 30 40% 99%;
+    --popover-foreground: 25 20% 18%;
 
-    /* Primary: Rose Pink for CTAs and highlights */
-    --primary: 347 77% 50%;
+    /* Primary: Dusty Rose Pink */
+    --primary: 350 65% 55%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Soft Blush Pink */
-    --secondary: 350 100% 97%;
-    --secondary-foreground: 220 15% 20%;
+    /* Secondary: Soft Champagne Blush */
+    --secondary: 35 50% 95%;
+    --secondary-foreground: 25 20% 18%;
 
-    --muted: 350 30% 96%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 35 35% 94%;
+    --muted-foreground: 25 12% 45%;
 
-    /* Accent: Champagne Gold (subtle) */
-    --accent: 43 74% 49%;
-    --accent-foreground: 220 15% 20%;
+    /* Accent: Antique Gold */
+    --accent: 40 70% 50%;
+    --accent-foreground: 25 20% 18%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 350 20% 90%;
-    --input: 350 20% 90%;
-    --ring: 347 77% 50%;
+    --border: 35 30% 88%;
+    --input: 35 30% 88%;
+    --ring: 350 65% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     /* Custom Phoenix Colors - Light Theme */
-    --gold: 43 74% 49%;
-    --gold-light: 43 80% 65%;
-    --gold-dark: 43 70% 35%;
-    --champagne: 40 40% 80%;
-    --charcoal: 220 15% 20%;
-    --charcoal-light: 220 10% 30%;
-    --rose: 347 77% 50%;
-    --rose-light: 350 100% 97%;
-    --blush: 350 50% 95%;
+    --gold: 40 70% 50%;
+    --gold-light: 42 75% 62%;
+    --gold-dark: 38 65% 38%;
+    --champagne: 38 45% 82%;
+    --charcoal: 25 20% 18%;
+    --charcoal-light: 25 15% 28%;
+    --rose: 350 65% 55%;
+    --rose-light: 350 70% 94%;
+    --blush: 35 55% 93%;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 15% 20%;
-    --sidebar-primary: 347 77% 50%;
+    --sidebar-background: 30 40% 99%;
+    --sidebar-foreground: 25 20% 18%;
+    --sidebar-primary: 350 65% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 350 30% 96%;
-    --sidebar-accent-foreground: 220 15% 20%;
-    --sidebar-border: 350 20% 90%;
-    --sidebar-ring: 347 77% 50%;
+    --sidebar-accent: 35 35% 94%;
+    --sidebar-accent-foreground: 25 20% 18%;
+    --sidebar-border: 35 30% 88%;
+    --sidebar-ring: 350 65% 55%;
   }
 
   .light {
-    /* Light Theme - Premium Wedding/Celebratory Feel */
-    --background: 30 50% 99%;
-    --foreground: 220 15% 20%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
-    --primary: 347 77% 50%;
+    /* Light Theme - Warm Cream & Dusty Rose */
+    --background: 35 45% 97%;
+    --foreground: 25 20% 18%;
+    --card: 30 40% 99%;
+    --card-foreground: 25 20% 18%;
+    --popover: 30 40% 99%;
+    --popover-foreground: 25 20% 18%;
+    --primary: 350 65% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 350 100% 97%;
-    --secondary-foreground: 220 15% 20%;
-    --muted: 350 30% 96%;
-    --muted-foreground: 220 10% 45%;
-    --accent: 43 74% 49%;
-    --accent-foreground: 220 15% 20%;
+    --secondary: 35 50% 95%;
+    --secondary-foreground: 25 20% 18%;
+    --muted: 35 35% 94%;
+    --muted-foreground: 25 12% 45%;
+    --accent: 40 70% 50%;
+    --accent-foreground: 25 20% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-    --border: 350 20% 90%;
-    --input: 350 20% 90%;
-    --ring: 347 77% 50%;
+    --border: 35 30% 88%;
+    --input: 35 30% 88%;
+    --ring: 350 65% 55%;
   }
 
   .dark {
-    /* Dark Theme - Luxury Cinematic Feel */
-    --background: 0 0% 4%;
-    --foreground: 40 20% 95%;
-    --card: 0 0% 8%;
-    --card-foreground: 40 20% 95%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 40 20% 95%;
-    --primary: 43 74% 49%;
-    --primary-foreground: 0 0% 4%;
-    --secondary: 40 30% 20%;
-    --secondary-foreground: 40 20% 95%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 40 10% 60%;
-    --accent: 43 74% 49%;
-    --accent-foreground: 0 0% 4%;
+    /* Dark Theme - Deep Luxury with Rich Gold & Burgundy hints */
+    --background: 0 0% 3%;
+    --foreground: 38 30% 92%;
+    --card: 0 5% 7%;
+    --card-foreground: 38 30% 92%;
+    --popover: 0 5% 7%;
+    --popover-foreground: 38 30% 92%;
+    --primary: 40 72% 52%;
+    --primary-foreground: 0 0% 3%;
+    --secondary: 0 8% 12%;
+    --secondary-foreground: 38 30% 92%;
+    --muted: 0 5% 14%;
+    --muted-foreground: 38 15% 55%;
+    --accent: 40 72% 52%;
+    --accent-foreground: 0 0% 3%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 40 20% 20%;
-    --input: 40 20% 20%;
-    --ring: 43 74% 49%;
+    --border: 0 10% 15%;
+    --input: 0 10% 15%;
+    --ring: 40 72% 52%;
 
     /* Custom Phoenix Colors - Dark Theme */
-    --gold: 43 74% 49%;
-    --gold-light: 43 80% 65%;
-    --gold-dark: 43 70% 35%;
-    --champagne: 40 40% 80%;
-    --charcoal: 0 0% 12%;
-    --charcoal-light: 0 0% 18%;
-    --rose: 347 77% 50%;
-    --rose-light: 347 60% 30%;
-    --blush: 350 30% 15%;
+    --gold: 40 72% 52%;
+    --gold-light: 42 78% 62%;
+    --gold-dark: 38 68% 40%;
+    --champagne: 38 50% 75%;
+    --charcoal: 0 0% 10%;
+    --charcoal-light: 0 0% 16%;
+    --rose: 350 55% 45%;
+    --rose-light: 350 40% 25%;
+    --blush: 350 25% 12%;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 40 20% 95%;
-    --sidebar-primary: 43 74% 49%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 40 20% 95%;
-    --sidebar-border: 40 20% 15%;
-    --sidebar-ring: 43 74% 49%;
+    --sidebar-background: 0 5% 5%;
+    --sidebar-foreground: 38 30% 92%;
+    --sidebar-primary: 40 72% 52%;
+    --sidebar-primary-foreground: 0 0% 3%;
+    --sidebar-accent: 0 5% 14%;
+    --sidebar-accent-foreground: 38 30% 92%;
+    --sidebar-border: 0 10% 12%;
+    --sidebar-ring: 40 72% 52%;
   }
 }
 
