@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/ThemeProvider";
+import MotionSection, { StaggerContainer, StaggerItem } from "@/components/ui/MotionSection";
 
 const galleryImages = [
   {
@@ -32,61 +35,109 @@ const galleryImages = [
 ];
 
 const GalleryPreviewSection = () => {
+  const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6">
+        <MotionSection className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6">
           <div className="space-y-4">
-            <p className="text-primary font-sans text-sm tracking-[0.3em] uppercase">
+            <motion.p
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-primary font-sans text-sm tracking-[0.3em] uppercase"
+            >
               Our Portfolio
-            </p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold">
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold"
+            >
               Featured <span className="text-gradient-gold">Events</span>
-            </h2>
-            <p className="text-muted-foreground font-sans max-w-xl">
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-muted-foreground font-sans max-w-xl"
+            >
               A glimpse into the extraordinary celebrations we've had the honor of creating.
-            </p>
+            </motion.p>
           </div>
-          <Button
-            asChild
-            variant="outline"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground self-start md:self-auto"
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Link to="/gallery" className="flex items-center gap-2">
-              View Full Gallery
-              <ArrowRight size={16} />
-            </Link>
-          </Button>
-        </div>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="self-start md:self-auto"
+            >
+              <Link to="/gallery" className="flex items-center gap-2">
+                View Full Gallery
+                <ArrowRight size={16} />
+              </Link>
+            </Button>
+          </motion.div>
+        </MotionSection>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]">
-          {galleryImages.map((image, index) => (
-            <div
-              key={image.alt}
-              className={cn(
-                "group relative overflow-hidden rounded-lg cursor-pointer hover-lift",
-                image.span,
-                "opacity-0 animate-fade-in"
-              )}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-foreground font-serif text-lg">{image.alt}</p>
-                  <p className="text-primary text-sm mt-1">View Gallery</p>
-                </div>
-              </div>
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary/50 rounded-lg transition-colors" />
-            </div>
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]" staggerDelay={0.08}>
+          {galleryImages.map((image) => (
+            <StaggerItem key={image.alt}>
+              <motion.div
+                className={cn(
+                  "group relative overflow-hidden rounded-2xl cursor-pointer h-full",
+                  image.span
+                )}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.3 } }}
+              >
+                <motion.img
+                  src={image.src}
+                  alt={image.alt}
+                  className="w-full h-full object-cover"
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.1, transition: { duration: 0.7 } }}
+                />
+                <motion.div
+                  className={cn(
+                    "absolute inset-0 flex items-center justify-center",
+                    theme === "light"
+                      ? "bg-primary/60"
+                      : "bg-background/70"
+                  )}
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="text-center">
+                    <p className="text-white font-serif text-lg">{image.alt}</p>
+                    <p className={cn(
+                      "text-sm mt-1",
+                      theme === "light" ? "text-white/80" : "text-primary"
+                    )}>
+                      View Gallery
+                    </p>
+                  </div>
+                </motion.div>
+                <div className={cn(
+                  "absolute inset-0 border-2 border-transparent rounded-2xl transition-colors",
+                  "group-hover:border-primary/50"
+                )} />
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

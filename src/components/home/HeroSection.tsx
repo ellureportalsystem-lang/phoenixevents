@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
@@ -15,6 +16,7 @@ const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -50,94 +52,158 @@ const HeroSection = () => {
 
   const content = heroContent[theme];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Background Images */}
+      {/* Background Images with Parallax Effect */}
       {heroImages.map((img, index) => (
-        <div
+        <motion.div
           key={img}
           className={cn(
             "absolute inset-0 transition-opacity duration-1000",
             currentImage === index ? "opacity-100" : "opacity-0"
           )}
+          initial={false}
+          animate={currentImage === index && !shouldReduceMotion ? { scale: 1.05 } : { scale: 1 }}
+          transition={{ duration: 5, ease: "easeOut" }}
         >
           <img
             src={img}
             alt={`Event ${index + 1}`}
             className="w-full h-full object-cover"
           />
-        </div>
+        </motion.div>
       ))}
 
-      {/* Gradient Overlay - Theme aware */}
+      {/* Gradient Overlay - Theme aware with enhanced depth */}
       <div className={cn(
         "absolute inset-0 transition-colors duration-500",
         theme === "light"
-          ? "bg-gradient-to-b from-white/70 via-white/50 to-white"
-          : "bg-gradient-to-b from-background/60 via-background/40 to-background"
+          ? "bg-gradient-to-b from-background/80 via-background/50 to-background"
+          : "bg-gradient-to-b from-background/70 via-background/40 to-background"
       )} />
       <div className={cn(
         "absolute inset-0 transition-colors duration-500",
         theme === "light"
-          ? "bg-gradient-to-r from-rose-50/80 via-transparent to-rose-50/80"
-          : "bg-gradient-to-r from-background/70 via-transparent to-background/70"
+          ? "bg-gradient-to-r from-rose-light/90 via-transparent to-rose-light/90"
+          : "bg-gradient-to-r from-background/80 via-transparent to-background/80"
       )} />
 
       {/* Content */}
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-        <div
-          className={cn(
-            "space-y-8 max-w-4xl mx-auto",
-            isLoaded ? "animate-fade-in-up" : "opacity-0"
-          )}
+        <motion.div
+          className="space-y-8 max-w-4xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isLoaded ? "visible" : "hidden"}
         >
-          <div className="space-y-4">
-            <p className="text-primary font-sans text-sm md:text-base tracking-[0.3em] uppercase opacity-0 animate-fade-in stagger-1">
+          <div className="space-y-5">
+            <motion.p
+              variants={itemVariants}
+              className="text-primary font-sans text-sm md:text-base tracking-[0.3em] uppercase"
+            >
               {content.tagline}
-            </p>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight opacity-0 animate-fade-in stagger-2">
+            </motion.p>
+            
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight"
+            >
               {content.headline}{" "}
               <span className={cn(
                 "bg-clip-text text-transparent transition-all duration-500",
                 theme === "light"
-                  ? "bg-gradient-to-r from-rose-500 via-pink-400 to-rose-400"
+                  ? "bg-gradient-to-r from-primary via-rose to-accent"
                   : "bg-gradient-to-r from-gold-light via-gold to-gold-dark"
               )}>
                 {content.highlight}
               </span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-sans font-light opacity-0 animate-fade-in stagger-3">
+            </motion.h1>
+            
+            <motion.p
+              variants={itemVariants}
+              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-sans font-light"
+            >
               {content.description}
-            </p>
+            </motion.p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0 animate-fade-in stagger-4">
-            <Button
-              asChild
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6 font-sans tracking-wide hover-glow"
-            >
-              <a
-                href="https://wa.me/1234567890?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event"
-                target="_blank"
-                rel="noopener noreferrer"
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-2"
+          >
+            <motion.div variants={buttonVariants}>
+              <Button
+                asChild
+                size="xl"
+                variant="premium"
+                className="font-sans tracking-wide"
               >
-                Plan Your Event
-              </a>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground text-lg px-8 py-6 font-sans tracking-wide"
-            >
-              <a href="/gallery">View Our Work</a>
-            </Button>
-          </div>
-        </div>
+                <a
+                  href="https://wa.me/1234567890?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Plan Your Event
+                </a>
+              </Button>
+            </motion.div>
+            <motion.div variants={buttonVariants}>
+              <Button
+                asChild
+                size="xl"
+                variant="outline"
+                className="font-sans tracking-wide"
+              >
+                <a href="/gallery">View Our Work</a>
+              </Button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         {/* Image Indicators */}
-        <div className="absolute bottom-24 lg:bottom-32 flex space-x-1.5 lg:space-x-2">
+        <motion.div
+          className="absolute bottom-24 lg:bottom-32 flex space-x-1.5 lg:space-x-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+        >
           {heroImages.map((_, index) => (
             <button
               key={index}
@@ -151,16 +217,24 @@ const HeroSection = () => {
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
-        </div>
+        </motion.div>
 
         {/* Scroll Indicator */}
-        <button
+        <motion.button
           onClick={scrollToContent}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-foreground/60 hover:text-primary transition-colors animate-float"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-foreground/60 hover:text-primary transition-colors"
           aria-label="Scroll down"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
         >
-          <ChevronDown size={32} />
-        </button>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown size={32} />
+          </motion.div>
+        </motion.button>
       </div>
     </section>
   );
