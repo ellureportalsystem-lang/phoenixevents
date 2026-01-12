@@ -199,7 +199,7 @@ const TestimonialsSection = () => {
           </motion.button>
 
           {/* Testimonial Content */}
-          <div className="px-4 md:px-20 min-h-[450px] md:min-h-[400px] relative flex items-center justify-center">
+          <div className="px-4 md:px-20 min-h-[380px] md:min-h-[350px] relative flex items-center justify-center">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -214,7 +214,7 @@ const TestimonialsSection = () => {
                   scale: { duration: 0.4 },
                 }}
                 className={cn(
-                  "w-full p-8 md:p-12 lg:p-16 rounded-3xl relative overflow-hidden",
+                  "w-full p-6 md:p-8 lg:p-10 rounded-3xl relative overflow-hidden",
                   theme === "light"
                     ? "bg-white border border-rose-100/80 shadow-[0_20px_60px_-15px_hsl(350_30%_50%/0.12)]"
                     : "bg-card/80 backdrop-blur-xl border border-border/50 shadow-[0_20px_60px_-15px_hsl(var(--primary)/0.15)]"
@@ -236,7 +236,7 @@ const TestimonialsSection = () => {
                   >
                     <div className="relative">
                       <div className={cn(
-                        "w-28 h-28 md:w-36 md:h-36 rounded-full p-1",
+                        "w-24 h-24 md:w-28 md:h-28 rounded-full p-1",
                         theme === "light"
                           ? "bg-gradient-to-br from-primary via-rose to-accent"
                           : "bg-gradient-to-br from-gold-light via-gold to-gold-dark"
@@ -249,7 +249,7 @@ const TestimonialsSection = () => {
                       </div>
                       {/* Quote icon */}
                       <div className={cn(
-                        "absolute -bottom-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center",
+                        "absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center",
                         theme === "light"
                           ? "bg-primary text-white shadow-lg"
                           : "bg-primary text-background shadow-lg"
@@ -282,7 +282,7 @@ const TestimonialsSection = () => {
 
                     {/* Quote */}
                     <motion.blockquote
-                      className="text-lg md:text-xl lg:text-2xl text-foreground font-serif italic leading-relaxed mb-6"
+                      className="text-base md:text-lg lg:text-xl text-foreground font-serif italic leading-relaxed mb-6"
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25, duration: 0.5 }}
@@ -296,7 +296,7 @@ const TestimonialsSection = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.35, duration: 0.4 }}
                     >
-                      <p className="text-lg font-semibold font-sans text-foreground">
+                      <p className="text-base font-semibold font-sans text-foreground">
                         {testimonials[currentIndex].name}
                       </p>
                       <p className={cn(
@@ -312,8 +312,8 @@ const TestimonialsSection = () => {
             </AnimatePresence>
           </div>
 
-          {/* Dots Navigation */}
-          <div className="flex justify-center gap-3 mt-10">
+          {/* Dots - Desktop only */}
+          <div className="hidden lg:flex justify-center gap-3 mt-8">
             {testimonials.map((_, index) => (
               <motion.button
                 key={index}

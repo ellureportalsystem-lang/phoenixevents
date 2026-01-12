@@ -18,7 +18,6 @@ const darkThemeImages = [
   "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80",
   "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80",
   "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80",
-  "https://images.unsplash.com/photo-1478146059778-26a7c7d35cb0?w=1920&q=80",
 ];
 
 const HeroSection = () => {
@@ -122,24 +121,68 @@ const HeroSection = () => {
           <img
             src={img}
             alt={`Event ${index + 1}`}
-            className="w-full h-full object-cover"
+            className={cn(
+              "w-full h-full object-cover transition-all duration-500",
+              theme === "light"
+                ? "brightness-[1.05] contrast-[1.08] saturate-[1.12]"
+                : "brightness-110 contrast-105"
+            )}
           />
         </motion.div>
       ))}
 
-      {/* Gradient Overlay - Theme aware with enhanced depth */}
+      {/* Gradient Overlay - Theme aware with enhanced depth for better text visibility */}
       <div className={cn(
         "absolute inset-0 transition-colors duration-500",
         theme === "light"
-          ? "bg-gradient-to-b from-white/70 via-white/40 to-white/90"
-          : "bg-gradient-to-b from-background/70 via-background/40 to-background"
+          ? "bg-gradient-to-b from-white/50 via-white/40 to-white/55"
+          : "bg-gradient-to-b from-background/60 via-background/40 to-background"
       )} />
       <div className={cn(
         "absolute inset-0 transition-colors duration-500",
         theme === "light"
-          ? "bg-gradient-to-r from-white/60 via-transparent to-white/60"
-          : "bg-gradient-to-r from-background/80 via-transparent to-background/80"
+          ? "bg-gradient-to-r from-rose-50/30 via-transparent to-rose-50/30"
+          : "bg-gradient-to-r from-background/70 via-transparent to-background/70"
       )} />
+      {/* Text readability overlay for light theme */}
+      {theme === "light" && (
+        <>
+          {/* Minimal Vignette Effect - Very light */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: 'radial-gradient(ellipse 120% 100% at center top, transparent 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.15) 80%, rgba(0, 0, 0, 0.25) 100%)',
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Top vignette - very minimal */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.04) 15%, transparent 30%)',
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Bottom vignette - minimal */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: 'linear-gradient(to top, rgba(0, 0, 0, 0.06) 0%, transparent 40%)',
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Side vignettes - minimal */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: 'linear-gradient(to right, rgba(0, 0, 0, 0.04) 0%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.04) 100%)',
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Center light area for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-white/15 to-white/20 transition-opacity duration-500" />
+        </>
+      )}
 
       {/* Content */}
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
@@ -222,9 +265,9 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
 
-        {/* Image Indicators */}
+        {/* Image Indicators - Desktop only */}
         <motion.div
-          className="absolute bottom-24 lg:bottom-32 flex space-x-1.5 lg:space-x-2"
+          className="absolute bottom-24 lg:bottom-32 hidden lg:flex space-x-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.6 }}
@@ -234,10 +277,10 @@ const HeroSection = () => {
               key={index}
               onClick={() => setCurrentImage(index)}
               className={cn(
-                "h-1.5 lg:h-2 rounded-full transition-all duration-300",
+                "h-2 rounded-full transition-all duration-300",
                 currentImage === index
-                  ? "w-5 lg:w-8 bg-primary"
-                  : "w-1.5 lg:w-2 bg-foreground/30 hover:bg-foreground/50"
+                  ? "w-8 bg-primary"
+                  : "w-2 bg-foreground/30 hover:bg-foreground/50"
               )}
               aria-label={`Go to slide ${index + 1}`}
             />
