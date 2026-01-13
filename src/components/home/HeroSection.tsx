@@ -5,7 +5,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
 
-const heroImages = [
+// Light theme images - bright, airy, soft wedding/celebration photos
+const lightThemeImages = [
+  "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920&q=80", // Bright floral wedding arch
+  "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&q=80", // Soft pink roses bouquet
+  "https://images.unsplash.com/photo-1507504031003-b417f0f91c54?w=1920&q=80", // Light elegant table setup
+  "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&q=80", // Romantic outdoor ceremony
+];
+
+// Dark theme images - dramatic, luxurious, evening celebrations
+const darkThemeImages = [
   "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80",
   "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80",
   "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80",
@@ -18,6 +27,8 @@ const HeroSection = () => {
   const { theme } = useTheme();
   const shouldReduceMotion = useReducedMotion();
 
+  const heroImages = theme === "light" ? lightThemeImages : darkThemeImages;
+
   useEffect(() => {
     setIsLoaded(true);
     const interval = setInterval(() => {
@@ -25,7 +36,12 @@ const HeroSection = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [heroImages.length]);
+
+  // Reset image index when theme changes
+  useEffect(() => {
+    setCurrentImage(0);
+  }, [theme]);
 
   const scrollToContent = () => {
     window.scrollTo({
@@ -94,7 +110,7 @@ const HeroSection = () => {
       {/* Background Images with Parallax Effect */}
       {heroImages.map((img, index) => (
         <motion.div
-          key={img}
+          key={`${theme}-${img}`}
           className={cn(
             "absolute inset-0 transition-opacity duration-1000",
             currentImage === index ? "opacity-100" : "opacity-0"
@@ -115,13 +131,13 @@ const HeroSection = () => {
       <div className={cn(
         "absolute inset-0 transition-colors duration-500",
         theme === "light"
-          ? "bg-gradient-to-b from-background/80 via-background/50 to-background"
+          ? "bg-gradient-to-b from-white/70 via-white/40 to-white/90"
           : "bg-gradient-to-b from-background/70 via-background/40 to-background"
       )} />
       <div className={cn(
         "absolute inset-0 transition-colors duration-500",
         theme === "light"
-          ? "bg-gradient-to-r from-rose-light/90 via-transparent to-rose-light/90"
+          ? "bg-gradient-to-r from-white/60 via-transparent to-white/60"
           : "bg-gradient-to-r from-background/80 via-transparent to-background/80"
       )} />
 
@@ -136,14 +152,20 @@ const HeroSection = () => {
           <div className="space-y-5">
             <motion.p
               variants={itemVariants}
-              className="text-primary font-sans text-sm md:text-base tracking-[0.3em] uppercase"
+              className={cn(
+                "font-sans text-sm md:text-base tracking-[0.3em] uppercase",
+                theme === "light" ? "text-primary" : "text-primary"
+              )}
             >
               {content.tagline}
             </motion.p>
             
             <motion.h1
               variants={itemVariants}
-              className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight"
+              className={cn(
+                "text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight",
+                theme === "light" ? "text-charcoal" : "text-foreground"
+              )}
             >
               {content.headline}{" "}
               <span className={cn(
@@ -158,7 +180,10 @@ const HeroSection = () => {
             
             <motion.p
               variants={itemVariants}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-sans font-light"
+              className={cn(
+                "text-lg md:text-xl max-w-2xl mx-auto font-sans font-light",
+                theme === "light" ? "text-charcoal/70" : "text-muted-foreground"
+              )}
             >
               {content.description}
             </motion.p>
