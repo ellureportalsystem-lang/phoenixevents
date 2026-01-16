@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useTheme } from "@/components/ThemeProvider";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", href: "/", icon: Home },
@@ -64,13 +65,28 @@ const Navbar = () => {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-14 lg:h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 group">
-              <span className="text-lg lg:text-xl font-serif font-bold text-gradient-gold">
-                Phoenix
-              </span>
-              <span className="text-[10px] lg:text-xs font-sans text-muted-foreground tracking-widest uppercase">
-                Events
-              </span>
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <img 
+                src={logo} 
+                alt="Phoenix Events & Production" 
+                className="h-10 lg:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="flex flex-col leading-tight">
+                <span className={cn(
+                  "text-base lg:text-lg font-serif font-bold tracking-wide",
+                  theme === "light" 
+                    ? "bg-gradient-to-r from-rose-500 via-rose-400 to-amber-500 bg-clip-text text-transparent"
+                    : "text-gradient-gold"
+                )}>
+                  Phoenix Events
+                </span>
+                <span className={cn(
+                  "text-[9px] lg:text-[10px] font-sans tracking-[0.2em] uppercase",
+                  theme === "light" ? "text-rose-400/80" : "text-primary/70"
+                )}>
+                  & Production
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -169,7 +185,19 @@ const Navbar = () => {
             "flex items-center justify-between p-4 border-b",
             theme === "light" ? "border-rose-100" : "border-border"
           )}>
-            <span className="text-lg font-serif font-bold text-gradient-gold">Menu</span>
+            <div className="flex items-center gap-2">
+              <img 
+                src={logo} 
+                alt="Phoenix Events & Production" 
+                className="h-8 w-auto object-contain"
+              />
+              <span className={cn(
+                "text-sm font-serif font-bold",
+                theme === "light" 
+                  ? "bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent"
+                  : "text-gradient-gold"
+              )}>Phoenix</span>
+            </div>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
               className="p-2 rounded-lg transition-colors active:scale-95"
