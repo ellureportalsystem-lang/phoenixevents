@@ -1,19 +1,64 @@
 import { Sparkles, Award, Users, Calendar } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import MotionSection, { StaggerContainer, StaggerItem } from "@/components/ui/MotionSection";
 import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
 
 const stats = [
-  { icon: Calendar, value: "500+", label: "Events Delivered" },
-  { icon: Users, value: "10K+", label: "Happy Clients" },
-  { icon: Award, value: "15+", label: "Years Experience" },
-  { icon: Sparkles, value: "50+", label: "Expert Team" },
+  { icon: Calendar, value: 500, label: "Events Delivered", suffix: "+" },
+  { icon: Users, value: 10000, label: "Happy Clients", suffix: "+" },
+  { icon: Award, value: 15, label: "Years Experience", suffix: "+" },
+  { icon: Sparkles, value: 50, label: "Expert Team", suffix: "+" },
 ];
+
+const Counter = ({ value, suffix, isInView }: { value: number; suffix: string; isInView: boolean }) => {
+  const [count, setCount] = useState(0);
+  const hasAnimatedRef = useRef(false);
+  const targetValue = value;
+
+  useEffect(() => {
+    if (!isInView || hasAnimatedRef.current) return;
+
+    hasAnimatedRef.current = true;
+    setCount(0); // Start from 0
+    
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const increment = targetValue / steps;
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += increment;
+      const newCount = Math.floor(current);
+      if (current >= targetValue) {
+        setCount(targetValue);
+        clearInterval(timer);
+      } else {
+        setCount(newCount);
+      }
+    }, duration / steps);
+
+    return () => clearInterval(timer);
+  }, [isInView, targetValue]);
+
+  // Format large numbers (e.g., 10000 as "10K")
+  const formatNumber = (num: number) => {
+    if (targetValue >= 10000) {
+      const kValue = Math.floor(num / 1000);
+      return kValue.toString();
+    }
+    return num.toString();
+  };
+
+  return <>{formatNumber(count)}{targetValue >= 10000 ? 'K' : ''}{suffix}</>;
+};
 
 const AboutSection = () => {
   const { theme } = useTheme();
   const shouldReduceMotion = useReducedMotion();
+  const statsRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(statsRef, { once: true, amount: 0.2, margin: "-100px" });
 
   return (
     <section className={cn(
@@ -77,27 +122,30 @@ const AboutSection = () => {
             </motion.div>
 
             {/* Stats */}
-            <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8">
-              {stats.map((stat) => (
-                <StaggerItem key={stat.label}>
-                  <motion.div
-                    className={cn(
-                      "text-center p-4 rounded-2xl border transition-all duration-300",
-                      theme === "light"
-                        ? "border-rose-100/50 bg-white/80 backdrop-blur-sm hover:shadow-[0_8px_30px_-8px_hsl(350_30%_50%/0.12)]"
-                        : "border-border/50 bg-background/50 hover:border-primary/30"
-                    )}
-                    whileHover={shouldReduceMotion ? {} : { y: -4, transition: { duration: 0.2 } }}
-                  >
-                    <stat.icon className="w-6 h-6 mx-auto text-primary mb-2" />
-                    <p className="text-2xl md:text-3xl font-serif font-bold text-gradient-gold">
-                      {stat.value}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
-                  </motion.div>
-                </StaggerItem>
+            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className={cn(
+                    "text-center p-4 rounded-2xl border transition-all duration-300",
+                    theme === "light"
+                      ? "border-rose-100/50 bg-white/80 backdrop-blur-sm hover:shadow-[0_8px_30px_-8px_hsl(350_30%_50%/0.12)]"
+                      : "border-border/50 bg-background/50 hover:border-primary/30"
+                  )}
+                  whileHover={shouldReduceMotion ? {} : { y: -4, transition: { duration: 0.2 } }}
+                >
+                  <stat.icon className="w-6 h-6 mx-auto text-primary mb-2" />
+                  <p className="text-2xl md:text-3xl font-serif font-bold text-gradient-gold">
+                    <Counter value={stat.value} suffix={stat.suffix} isInView={isInView} />
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+                </motion.div>
               ))}
-            </StaggerContainer>
+            </div>
           </MotionSection>
 
           {/* Image Grid */}
@@ -108,21 +156,41 @@ const AboutSection = () => {
                   className="overflow-hidden rounded-2xl"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.3 } }}
                 >
-                  <img
-                    src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80"
-                    alt="Elegant wedding setup"
-                    className="w-full h-48 object-cover transition-transform duration-700 hover:scale-110"
-                  />
+                  <div className="relative">
+                    <img
+                      src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80"
+                      alt="Elegant wedding setup"
+                      className="w-full h-48 object-cover transition-transform duration-700 hover:scale-110"
+                    />
+                    {theme === "light" && (
+                      <div 
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{
+                          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.3) 100%)'
+                        }}
+                      />
+                    )}
+                  </div>
                 </motion.div>
                 <motion.div
                   className="overflow-hidden rounded-2xl"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.3 } }}
                 >
-                  <img
-                    src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80"
-                    alt="Wedding ceremony"
-                    className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
-                  />
+                  <div className="relative">
+                    <img
+                      src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80"
+                      alt="Wedding ceremony"
+                      className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
+                    />
+                    {theme === "light" && (
+                      <div 
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{
+                          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.3) 100%)'
+                        }}
+                      />
+                    )}
+                  </div>
                 </motion.div>
               </div>
               <div className="space-y-4 pt-8">
@@ -130,21 +198,41 @@ const AboutSection = () => {
                   className="overflow-hidden rounded-2xl"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.3 } }}
                 >
-                  <img
-                    src="https://images.unsplash.com/photo-1549488344-cbb6c34cf08b?w=600&q=80"
-                    alt="Event decoration"
-                    className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
-                  />
+                  <div className="relative">
+                    <img
+                      src="https://images.unsplash.com/photo-1549488344-cbb6c34cf08b?w=600&q=80"
+                      alt="Event decoration"
+                      className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
+                    />
+                    {theme === "light" && (
+                      <div 
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{
+                          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.3) 100%)'
+                        }}
+                      />
+                    )}
+                  </div>
                 </motion.div>
                 <motion.div
                   className="overflow-hidden rounded-2xl"
                   whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.3 } }}
                 >
-                  <img
-                    src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80"
-                    alt="Birthday celebration"
-                    className="w-full h-48 object-cover transition-transform duration-700 hover:scale-110"
-                  />
+                  <div className="relative">
+                    <img
+                      src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80"
+                      alt="Birthday celebration"
+                      className="w-full h-48 object-cover transition-transform duration-700 hover:scale-110"
+                    />
+                    {theme === "light" && (
+                      <div 
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        style={{
+                          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.1) 60%, rgba(0, 0, 0, 0.3) 100%)'
+                        }}
+                      />
+                    )}
+                  </div>
                 </motion.div>
               </div>
             </div>

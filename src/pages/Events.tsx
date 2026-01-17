@@ -276,7 +276,7 @@ const Events = () => {
 
                     {/* CTA */}
                     <a
-                      href={`https://wa.me/1234567890?text=Hello!%20I'm%20interested%20in%20${encodeURIComponent(event.title)}`}
+                      href={`https://wa.me/7066763276?text=Hello!%20I'm%20interested%20in%20${encodeURIComponent(event.title)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center text-primary text-xs font-medium active:scale-95 transition-all"

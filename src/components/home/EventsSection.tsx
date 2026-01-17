@@ -1,47 +1,39 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Sparkles, Heart, Cake, CircleDot, Music } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
 import MotionSection from "@/components/ui/MotionSection";
+import { ComingSoonDialog } from "@/components/ui/ComingSoonDialog";
 
 const events = [
   {
     title: "Weddings",
     image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80",
     description: "Timeless celebrations of love",
-    icon: "💍",
+    icon: Heart,
+    gradient: "from-rose-500 to-pink-500",
   },
   {
     title: "Birthdays",
     image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80",
     description: "Memorable milestone moments",
-    icon: "🎂",
+    icon: Cake,
+    gradient: "from-amber-500 to-orange-500",
   },
   {
     title: "Engagements",
     image: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80",
     description: "The beginning of forever",
-    icon: "💝",
+    icon: CircleDot,
+    gradient: "from-purple-500 to-pink-500",
   },
   {
     title: "Sangeet",
     image: "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=600&q=80",
     description: "Musical celebration of joy",
-    icon: "🎵",
-  },
-  {
-    title: "Haldi",
-    image: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a569?w=600&q=80",
-    description: "Traditional pre-wedding ritual",
-    icon: "🌼",
-  },
-  {
-    title: "Corporate",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80",
-    description: "Professional excellence",
-    icon: "🏢",
+    icon: Music,
+    gradient: "from-indigo-500 to-purple-500",
   },
 ];
 
@@ -53,6 +45,7 @@ const EventsSection = () => {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   const checkScroll = () => {
     if (scrollRef.current) {
@@ -60,7 +53,7 @@ const EventsSection = () => {
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
       
-      const cardWidth = 280;
+      const cardWidth = 220;
       const newIndex = Math.round(scrollLeft / cardWidth);
       setActiveIndex(Math.min(newIndex, events.length - 1));
     }
@@ -74,7 +67,7 @@ const EventsSection = () => {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = 280;
+      const scrollAmount = 220;
       scrollRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
@@ -189,16 +182,16 @@ const EventsSection = () => {
           </div>
         </div>
 
-        {/* Events Grid - Modern Bento-style Cards */}
+        {/* Events Grid - Elegant Image-Focused Cards */}
         <div 
           ref={scrollRef}
           onScroll={checkScroll}
-          className="flex lg:grid lg:grid-cols-3 gap-4 lg:gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
+          className="flex lg:grid lg:grid-cols-4 gap-3 lg:gap-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
         >
           {events.map((event, index) => (
             <motion.div
               key={event.title}
-              className="flex-shrink-0 w-[80vw] max-w-[280px] lg:w-auto lg:max-w-none snap-center"
+              className="flex-shrink-0 w-[50vw] max-w-[140px] lg:w-auto lg:max-w-none snap-center"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -206,21 +199,24 @@ const EventsSection = () => {
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <Link to="/events" className="block h-full">
+              <button
+                onClick={() => setShowComingSoon(true)}
+                className="block h-full w-full"
+              >
                 <motion.div
                   className={cn(
-                    "group relative h-[380px] lg:h-[420px] rounded-3xl overflow-hidden transition-all duration-500",
+                    "group relative aspect-square lg:aspect-[3/4] rounded-md overflow-hidden transition-all duration-500",
                     theme === "light" 
-                      ? "bg-white border border-border/50 shadow-[0_4px_30px_-8px_hsl(350_30%_50%/0.12)]" 
-                      : "bg-card border border-border/30 shadow-[0_4px_30px_-8px_hsl(0_0%_0%/0.4)]"
+                      ? "bg-white border border-rose-100/40 shadow-sm hover:shadow-md" 
+                      : "bg-card border border-border/30 shadow-sm hover:shadow-md"
                   )}
                   whileHover={shouldReduceMotion ? {} : {
-                    y: -12,
-                    transition: { duration: 0.4, ease: "easeOut" }
+                    y: -4,
+                    transition: { duration: 0.3, ease: "easeOut" }
                   }}
                 >
-                  {/* Image Container with Overlay */}
-                  <div className="relative h-[55%] overflow-hidden">
+                  {/* Full Image Background */}
+                  <div className="absolute inset-0">
                     <motion.img
                       src={event.image}
                       alt={event.title}
@@ -230,100 +226,89 @@ const EventsSection = () => {
                       loading="lazy"
                     />
                     
-                    {/* Gradient Overlay */}
-                    <div className={cn(
-                      "absolute inset-0 transition-opacity duration-300",
-                      theme === "light"
-                        ? "bg-gradient-to-t from-white via-transparent to-transparent"
-                        : "bg-gradient-to-t from-card via-transparent to-transparent"
-                    )} />
-
-                    {/* Floating Icon Badge */}
-                    <motion.div
-                      className={cn(
-                        "absolute top-4 right-4 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl",
-                        theme === "light"
-                          ? "bg-white/90 backdrop-blur-sm shadow-lg"
-                          : "bg-card/90 backdrop-blur-sm border border-border/50"
-                      )}
-                      animate={hoveredIndex === index && !shouldReduceMotion ? { 
-                        rotate: [0, -10, 10, 0],
-                        scale: 1.1 
-                      } : {}}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {event.icon}
-                    </motion.div>
+                    {/* Dark Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    
+                    {/* Subtle accent overlay on hover */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: event.gradient.includes('rose') 
+                          ? 'linear-gradient(to top, rgba(244, 63, 94, 0.2), transparent)'
+                          : event.gradient.includes('amber')
+                          ? 'linear-gradient(to top, rgba(245, 158, 11, 0.2), transparent)'
+                          : event.gradient.includes('purple')
+                          ? 'linear-gradient(to top, rgba(168, 85, 247, 0.2), transparent)'
+                          : event.gradient.includes('indigo')
+                          ? 'linear-gradient(to top, rgba(99, 102, 241, 0.2), transparent)'
+                          : event.gradient.includes('yellow')
+                          ? 'linear-gradient(to top, rgba(234, 179, 8, 0.2), transparent)'
+                          : 'linear-gradient(to top, rgba(59, 130, 246, 0.2), transparent)'
+                      }}
+                    />
                   </div>
 
-                  {/* Content Area */}
-                  <div className={cn(
-                    "absolute bottom-0 left-0 right-0 h-[48%] p-6 flex flex-col justify-between",
-                    theme === "light" ? "bg-white" : "bg-card"
-                  )}>
-                    {/* Title & Description */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3">
-                        <motion.div
-                          className={cn(
-                            "w-1 h-8 rounded-full",
-                            theme === "light" 
-                              ? "bg-gradient-to-b from-primary to-accent" 
-                              : "bg-gradient-to-b from-primary to-gold-light"
-                          )}
-                          animate={hoveredIndex === index && !shouldReduceMotion ? { 
-                            height: 32,
-                            transition: { duration: 0.3 }
-                          } : {}}
-                        />
-                        <h3 className="text-xl lg:text-2xl font-serif font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                          {event.title}
-                        </h3>
-                      </div>
-                      <p className="text-sm text-muted-foreground pl-4 leading-relaxed">
-                        {event.description}
-                      </p>
-                    </div>
-
-                    {/* Explore Button */}
-                    <motion.div
-                      className={cn(
-                        "flex items-center justify-between pt-4 border-t",
-                        theme === "light" ? "border-border/50" : "border-border/30"
-                      )}
-                    >
-                      <span className={cn(
-                        "text-sm font-medium tracking-wide",
-                        theme === "light" ? "text-primary" : "text-primary"
-                      )}>
-                        Explore
-                      </span>
+                  {/* Overlaid Content */}
+                  <div className="absolute inset-0 flex flex-col justify-between p-2 lg:p-2.5">
+                    {/* Top: Icon Badge */}
+                    <div className="flex justify-end">
                       <motion.div
                         className={cn(
-                          "w-10 h-10 rounded-2xl flex items-center justify-center transition-all duration-300",
+                          "w-6 h-6 lg:w-6 lg:h-6 rounded-md flex items-center justify-center backdrop-blur-md",
                           theme === "light"
-                            ? "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white"
-                            : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground"
+                            ? "bg-white/20 border border-white/30"
+                            : "bg-black/20 border border-white/20"
                         )}
-                        animate={hoveredIndex === index && !shouldReduceMotion ? { x: 4 } : { x: 0 }}
+                        animate={hoveredIndex === index && !shouldReduceMotion ? { 
+                          rotate: [0, -5, 5, 0],
+                          scale: 1.1 
+                        } : {}}
+                        transition={{ duration: 0.5 }}
                       >
-                        <ArrowRight size={18} />
+                        <event.icon 
+                          size={12} 
+                          className="text-white drop-shadow-lg" 
+                        />
                       </motion.div>
-                    </motion.div>
-                  </div>
+                    </div>
 
-                  {/* Hover Glow Effect */}
-                  <motion.div
-                    className={cn(
-                      "absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-500",
-                      hoveredIndex === index ? "opacity-100" : "opacity-0",
-                      theme === "light"
-                        ? "shadow-[inset_0_0_0_2px_hsl(350_65%_55%/0.3)]"
-                        : "shadow-[inset_0_0_0_2px_hsl(40_72%_52%/0.3)]"
-                    )}
-                  />
+                    {/* Bottom: Title, Description & CTA */}
+                    <div className="space-y-1">
+                      {/* Event Title - Overlaid on Image */}
+                      <div>
+                        <h3 className="text-sm lg:text-base font-serif font-bold text-white uppercase tracking-wide drop-shadow-lg mb-0.5">
+                          {event.title}
+                        </h3>
+                        <p className="text-white/90 text-[9px] lg:text-[10px] font-sans leading-tight drop-shadow-md">
+                          {event.description}
+                        </p>
+                      </div>
+
+                      {/* Explore Button */}
+                      <motion.div
+                        className="flex items-center justify-between pt-1 border-t border-white/20"
+                        animate={hoveredIndex === index && !shouldReduceMotion ? { 
+                          x: 2
+                        } : { x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <span className="text-white/90 text-[7px] lg:text-[8px] font-semibold tracking-wider uppercase">
+                          Explore More
+                        </span>
+                        <motion.div
+                          className="w-6 h-6 lg:w-6 lg:h-6 rounded-md flex items-center justify-center backdrop-blur-md bg-white/20 border border-white/30 group-hover:bg-white/30 transition-colors"
+                          animate={hoveredIndex === index && !shouldReduceMotion ? { 
+                            x: 2,
+                            scale: 1.05
+                          } : { x: 0, scale: 1 }}
+                        >
+                          <ArrowRight size={10} className="text-white drop-shadow-lg" />
+                        </motion.div>
+                      </motion.div>
+                    </div>
+                  </div>
                 </motion.div>
-              </Link>
+              </button>
             </motion.div>
           ))}
         </div>
@@ -334,8 +319,8 @@ const EventsSection = () => {
             whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
             whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
           >
-            <Link
-              to="/events"
+            <button
+              onClick={() => setShowComingSoon(true)}
               className={cn(
                 "inline-flex items-center gap-3 px-10 py-4 rounded-full font-sans text-sm tracking-wide transition-all duration-300 group",
                 theme === "light"
@@ -349,10 +334,11 @@ const EventsSection = () => {
               >
                 <ArrowRight size={18} />
               </motion.div>
-            </Link>
+            </button>
           </motion.div>
         </MotionSection>
       </div>
+      <ComingSoonDialog open={showComingSoon} onOpenChange={setShowComingSoon} />
     </section>
   );
 };

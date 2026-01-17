@@ -1,42 +1,67 @@
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
-import MotionSection, { StaggerContainer, StaggerItem } from "@/components/ui/MotionSection";
+import MotionSection from "@/components/ui/MotionSection";
+import { ComingSoonDialog } from "@/components/ui/ComingSoonDialog";
 
 const galleryImages = [
   {
     src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
     alt: "Elegant wedding setup",
-    span: "col-span-2 row-span-2",
   },
   {
     src: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80",
     alt: "Wedding ceremony",
-    span: "col-span-1 row-span-1",
   },
   {
     src: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80",
     alt: "Birthday celebration",
-    span: "col-span-1 row-span-1",
   },
   {
     src: "https://images.unsplash.com/photo-1549488344-cbb6c34cf08b?w=600&q=80",
     alt: "Event decoration",
-    span: "col-span-1 row-span-1",
   },
   {
     src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80",
     alt: "Corporate event",
-    span: "col-span-1 row-span-1",
   },
 ];
 
 const GalleryPreviewSection = () => {
+  const [showComingSoon, setShowComingSoon] = useState(false);
   const { theme } = useTheme();
   const shouldReduceMotion = useReducedMotion();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 320;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+      setTimeout(checkScroll, 300);
+    }
+  };
 
   return (
     <section className="py-24 bg-background">
@@ -79,29 +104,77 @@ const GalleryPreviewSection = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Button
-              asChild
               variant="outline"
               size="lg"
               className="self-start md:self-auto"
+              onClick={() => setShowComingSoon(true)}
             >
-              <Link to="/gallery" className="flex items-center gap-2">
+              <span className="flex items-center gap-2">
                 View Full Gallery
                 <ArrowRight size={16} />
-              </Link>
+              </span>
             </Button>
           </motion.div>
         </MotionSection>
 
-        {/* Gallery Grid */}
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px]" staggerDelay={0.08}>
-          {galleryImages.map((image) => (
-            <StaggerItem key={image.alt}>
-              <motion.div
+        {/* Carousel Navigation Buttons */}
+        <div className="flex items-center justify-end gap-2 mb-4">
+          <motion.button
+            onClick={() => scroll('left')}
+            disabled={!canScrollLeft}
+            className={cn(
+              "p-2.5 rounded-full transition-all border",
+              canScrollLeft
+                ? cn(
+                    "text-primary border-primary/20",
+                    theme === "light" ? "bg-white shadow-lg" : "bg-card"
+                  )
+                : "bg-muted text-muted-foreground/40 border-transparent"
+            )}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
+          >
+            <ChevronLeft size={20} />
+          </motion.button>
+          <motion.button
+            onClick={() => scroll('right')}
+            disabled={!canScrollRight}
+            className={cn(
+              "p-2.5 rounded-full transition-all border",
+              canScrollRight
+                ? cn(
+                    "text-primary border-primary/20",
+                    theme === "light" ? "bg-white shadow-lg" : "bg-card"
+                  )
+                : "bg-muted text-muted-foreground/40 border-transparent"
+            )}
+            whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
+          >
+            <ChevronRight size={20} />
+          </motion.button>
+        </div>
+
+        {/* Gallery Carousel */}
+        <div
+          ref={scrollRef}
+          onScroll={checkScroll}
+          className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {galleryImages.map((image, index) => (
+            <motion.div
+              key={image.alt}
+              className="flex-shrink-0 w-[85vw] sm:w-[60vw] md:w-[45vw] lg:w-[32vw] snap-center"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
+            >
+              <div
                 className={cn(
-                  "group relative overflow-hidden rounded-2xl cursor-pointer h-full",
-                  image.span
+                  "group relative overflow-hidden rounded-2xl cursor-pointer h-[240px] md:h-[300px]",
+                  "hover:shadow-xl transition-shadow duration-300"
                 )}
-                whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.3 } }}
+                onClick={() => setShowComingSoon(true)}
               >
                 <motion.img
                   src={image.src}
@@ -134,11 +207,12 @@ const GalleryPreviewSection = () => {
                   "absolute inset-0 border-2 border-transparent rounded-2xl transition-colors",
                   "group-hover:border-primary/50"
                 )} />
-              </motion.div>
-            </StaggerItem>
+              </div>
+            </motion.div>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
+      <ComingSoonDialog open={showComingSoon} onOpenChange={setShowComingSoon} />
     </section>
   );
 };

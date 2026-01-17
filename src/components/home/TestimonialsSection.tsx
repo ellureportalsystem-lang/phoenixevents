@@ -9,39 +9,39 @@ const testimonials = [
   {
     name: "Priya & Rahul Sharma",
     event: "Wedding Celebration",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&q=80",
     quote:
       "Phoenix Events transformed our wedding into a fairytale. Every detail was perfect, from the stunning décor to the seamless coordination. They truly understood our vision and exceeded all expectations.",
     rating: 5,
   },
   {
-    name: "Amit Patel",
+    name: "Amit & Kavya Patel",
     event: "Corporate Gala",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
     quote:
       "The team at Phoenix delivered an exceptional corporate event that impressed all our stakeholders. Their professionalism and attention to detail set them apart from any event company we've worked with.",
     rating: 5,
   },
   {
-    name: "Sneha Reddy",
+    name: "Sneha & Vikram Reddy",
     event: "50th Anniversary",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80",
+    image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=80",
     quote:
       "Planning my parents' golden anniversary was stress-free thanks to Phoenix Events. They created an elegant evening filled with precious moments and beautiful memories we'll cherish forever.",
     rating: 5,
   },
   {
-    name: "Vikram & Meera Joshi",
+    name: "Arjun & Meera Joshi",
     event: "Engagement Ceremony",
-    image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80",
+    image: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&q=80",
     quote:
       "From the moment we met the Phoenix team, we knew we were in good hands. Our engagement was nothing short of magical—exactly what we dreamed of and more.",
     rating: 5,
   },
   {
-    name: "Ananya Kapoor",
+    name: "Ananya & Rohan Kapoor",
     event: "Sangeet Night",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
     quote:
       "The sangeet night they organized was absolutely spectacular! The energy, the decorations, the music—everything came together perfectly. Our guests are still talking about it!",
     rating: 5,
@@ -167,12 +167,12 @@ const TestimonialsSection = () => {
         </MotionSection>
 
         {/* Testimonial Carousel */}
-        <div className="max-w-5xl mx-auto relative">
+        <div className="max-w-4xl mx-auto relative">
           {/* Navigation Buttons */}
           <motion.button
             onClick={goToPrevious}
             className={cn(
-              "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-16 w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all z-10 group",
+              "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-12 w-12 h-12 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all z-10 group",
               theme === "light"
                 ? "bg-white border-2 border-rose-100 text-charcoal hover:border-primary hover:text-primary shadow-lg hover:shadow-xl"
                 : "bg-card border-2 border-border text-foreground hover:border-primary hover:text-primary"
@@ -181,12 +181,12 @@ const TestimonialsSection = () => {
             whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
             whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
           >
-            <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
+            <ChevronLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
           </motion.button>
           <motion.button
             onClick={goToNext}
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-16 w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all z-10 group",
+              "absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-12 w-12 h-12 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all z-10 group",
               theme === "light"
                 ? "bg-white border-2 border-rose-100 text-charcoal hover:border-primary hover:text-primary shadow-lg hover:shadow-xl"
                 : "bg-card border-2 border-border text-foreground hover:border-primary hover:text-primary"
@@ -195,11 +195,15 @@ const TestimonialsSection = () => {
             whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
             whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
           >
-            <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight size={20} className="group-hover:translate-x-0.5 transition-transform" />
           </motion.button>
 
           {/* Testimonial Content */}
+<<<<<<< HEAD
           <div className="px-4 md:px-20 min-h-[380px] md:min-h-[350px] relative flex items-center justify-center">
+=======
+          <div className="px-4 md:px-16 min-h-[380px] md:min-h-[350px] relative flex items-center justify-center">
+>>>>>>> 02a167a (feat: Major UI improvements and enhancements)
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -222,11 +226,11 @@ const TestimonialsSection = () => {
               >
                 {/* Decorative gradient */}
                 <div className={cn(
-                  "absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-30",
+                  "absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-30",
                   theme === "light" ? "bg-primary/20" : "bg-primary/30"
                 )} />
                 
-                <div className="relative flex flex-col md:flex-row items-center gap-8">
+                <div className="relative flex flex-col md:flex-row items-center gap-6">
                   {/* Avatar Section */}
                   <motion.div
                     className="flex-shrink-0"
@@ -249,12 +253,16 @@ const TestimonialsSection = () => {
                       </div>
                       {/* Quote icon */}
                       <div className={cn(
+<<<<<<< HEAD
                         "absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center",
+=======
+                        "absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center",
+>>>>>>> 02a167a (feat: Major UI improvements and enhancements)
                         theme === "light"
                           ? "bg-primary text-white shadow-lg"
                           : "bg-primary text-background shadow-lg"
                       )}>
-                        <Quote size={18} />
+                        <Quote size={14} />
                       </div>
                     </div>
                   </motion.div>
@@ -263,7 +271,7 @@ const TestimonialsSection = () => {
                   <div className="flex-1 text-center md:text-left">
                     {/* Rating Stars */}
                     <motion.div
-                      className="flex justify-center md:justify-start gap-1 mb-4"
+                      className="flex justify-center md:justify-start gap-1 mb-3"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2, duration: 0.4 }}
@@ -271,7 +279,7 @@ const TestimonialsSection = () => {
                       {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
                         <Star
                           key={i}
-                          size={18}
+                          size={16}
                           className={cn(
                             "fill-current",
                             theme === "light" ? "text-amber-400" : "text-gold"
@@ -282,7 +290,11 @@ const TestimonialsSection = () => {
 
                     {/* Quote */}
                     <motion.blockquote
+<<<<<<< HEAD
                       className="text-base md:text-lg lg:text-xl text-foreground font-serif italic leading-relaxed mb-6"
+=======
+                      className="text-base md:text-lg lg:text-xl text-foreground font-serif italic leading-relaxed mb-4"
+>>>>>>> 02a167a (feat: Major UI improvements and enhancements)
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25, duration: 0.5 }}
@@ -300,7 +312,7 @@ const TestimonialsSection = () => {
                         {testimonials[currentIndex].name}
                       </p>
                       <p className={cn(
-                        "text-sm font-medium",
+                        "text-xs font-medium",
                         theme === "light" ? "text-primary" : "text-primary"
                       )}>
                         {testimonials[currentIndex].event}
@@ -347,7 +359,7 @@ const TestimonialsSection = () => {
 
           {/* Thumbnail Preview */}
           <motion.div 
-            className="hidden lg:flex justify-center gap-4 mt-12"
+            className="hidden lg:flex justify-center gap-3 mt-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -362,7 +374,7 @@ const TestimonialsSection = () => {
                   setCurrentIndex(index);
                 }}
                 className={cn(
-                  "relative w-14 h-14 rounded-full transition-all duration-300 overflow-hidden",
+                  "relative w-12 h-12 rounded-full transition-all duration-300 overflow-hidden",
                   index === currentIndex
                     ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
                     : "opacity-60 hover:opacity-100 grayscale hover:grayscale-0"

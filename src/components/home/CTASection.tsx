@@ -30,6 +30,16 @@ const CTASection = () => {
             ? "bg-gradient-to-r from-background via-background/95 to-background"
             : "bg-gradient-to-r from-background via-background/90 to-background"
         )} />
+        {/* Vignette effect for light theme images */}
+        {theme === "light" && (
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.25) 100%)',
+              pointerEvents: 'none'
+            }}
+          />
+        )}
       </motion.div>
 
       {/* Decorative Elements */}
@@ -108,7 +118,7 @@ const CTASection = () => {
                 className="font-sans tracking-wide"
               >
                 <a
-                  href="https://wa.me/1234567890?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event%20with%20Phoenix%20Events"
+                  href="https://wa.me/7066763276?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event%20with%20Phoenix%20Events"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

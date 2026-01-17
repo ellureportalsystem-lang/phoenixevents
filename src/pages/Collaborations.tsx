@@ -202,7 +202,7 @@ const Collaborations = () => {
                 className="bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 <a
-                  href="https://wa.me/1234567890?text=Hello!%20I'm%20interested%20in%20becoming%20a%20venue%20partner."
+                  href="https://wa.me/7066763276?text=Hello!%20I'm%20interested%20in%20becoming%20a%20venue%20partner."
                   target="_blank"
                   rel="noopener noreferrer"
                 >

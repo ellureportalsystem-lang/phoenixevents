@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
+import { ComingSoonDialog } from "@/components/ui/ComingSoonDialog";
 
 // Light theme images - romantic outdoor ceremonies with soft, warm tones
 const lightThemeImages = [
@@ -23,6 +24,7 @@ const darkThemeImages = [
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState(false);
   const { theme } = useTheme();
   const shouldReduceMotion = useReducedMotion();
 
@@ -196,8 +198,8 @@ const HeroSection = () => {
             <motion.p
               variants={itemVariants}
               className={cn(
-                "font-sans text-sm md:text-base tracking-[0.3em] uppercase",
-                theme === "light" ? "text-primary" : "text-primary"
+                "font-sans text-sm md:text-base tracking-[0.3em] uppercase font-semibold drop-shadow-sm",
+                theme === "light" ? "text-rose-600" : "text-primary"
               )}
             >
               {content.tagline}
@@ -206,15 +208,15 @@ const HeroSection = () => {
             <motion.h1
               variants={itemVariants}
               className={cn(
-                "text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight",
+                "text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-tight drop-shadow-md",
                 theme === "light" ? "text-charcoal" : "text-foreground"
               )}
             >
               {content.headline}{" "}
               <span className={cn(
-                "bg-clip-text text-transparent transition-all duration-500",
+                "bg-clip-text text-transparent transition-all duration-500 drop-shadow-sm",
                 theme === "light"
-                  ? "bg-gradient-to-r from-primary via-rose to-accent"
+                  ? "bg-gradient-to-r from-rose-600 via-rose-500 to-primary"
                   : "bg-gradient-to-r from-gold-light via-gold to-gold-dark"
               )}>
                 {content.highlight}
@@ -224,8 +226,8 @@ const HeroSection = () => {
             <motion.p
               variants={itemVariants}
               className={cn(
-                "text-lg md:text-xl max-w-2xl mx-auto font-sans font-light",
-                theme === "light" ? "text-charcoal/70" : "text-muted-foreground"
+                "text-lg md:text-xl max-w-2xl mx-auto font-sans font-light drop-shadow-sm",
+                theme === "light" ? "text-charcoal/85" : "text-muted-foreground"
               )}
             >
               {content.description}
@@ -244,7 +246,7 @@ const HeroSection = () => {
                 className="font-sans tracking-wide"
               >
                 <a
-                  href="https://wa.me/1234567890?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event"
+                  href="https://wa.me/7066763276?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -254,12 +256,12 @@ const HeroSection = () => {
             </motion.div>
             <motion.div variants={buttonVariants}>
               <Button
-                asChild
                 size="xl"
                 variant="outline"
                 className="font-sans tracking-wide"
+                onClick={() => setShowComingSoon(true)}
               >
-                <a href="/gallery">View Our Work</a>
+                View Our Work
               </Button>
             </motion.div>
           </motion.div>
@@ -304,6 +306,8 @@ const HeroSection = () => {
           </motion.div>
         </motion.button>
       </div>
+
+      <ComingSoonDialog open={showComingSoon} onOpenChange={setShowComingSoon} />
     </section>
   );
 };

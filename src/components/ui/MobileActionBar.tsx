@@ -28,7 +28,7 @@ const MobileActionBar = () => {
         <div className="flex items-center justify-between p-3 gap-3">
           {/* Plan Your Event Button */}
           <a
-            href="https://wa.me/1234567890?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event"
+            href="https://wa.me/7066763276?text=Hello%2C%20I%20would%20like%20to%20plan%20an%20event"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
@@ -44,7 +44,7 @@ const MobileActionBar = () => {
 
           {/* WhatsApp Direct Button */}
           <a
-            href="https://wa.me/1234567890"
+            href="https://wa.me/7066763276"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
