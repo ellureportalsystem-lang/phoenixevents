@@ -199,11 +199,7 @@ const TestimonialsSection = () => {
           </motion.button>
 
           {/* Testimonial Content */}
-<<<<<<< HEAD
           <div className="px-4 md:px-20 min-h-[380px] md:min-h-[350px] relative flex items-center justify-center">
-=======
-          <div className="px-4 md:px-16 min-h-[380px] md:min-h-[350px] relative flex items-center justify-center">
->>>>>>> 02a167a (feat: Major UI improvements and enhancements)
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -253,11 +249,7 @@ const TestimonialsSection = () => {
                       </div>
                       {/* Quote icon */}
                       <div className={cn(
-<<<<<<< HEAD
                         "absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center",
-=======
-                        "absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center",
->>>>>>> 02a167a (feat: Major UI improvements and enhancements)
                         theme === "light"
                           ? "bg-primary text-white shadow-lg"
                           : "bg-primary text-background shadow-lg"
@@ -290,11 +282,7 @@ const TestimonialsSection = () => {
 
                     {/* Quote */}
                     <motion.blockquote
-<<<<<<< HEAD
                       className="text-base md:text-lg lg:text-xl text-foreground font-serif italic leading-relaxed mb-6"
-=======
-                      className="text-base md:text-lg lg:text-xl text-foreground font-serif italic leading-relaxed mb-4"
->>>>>>> 02a167a (feat: Major UI improvements and enhancements)
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.25, duration: 0.5 }}

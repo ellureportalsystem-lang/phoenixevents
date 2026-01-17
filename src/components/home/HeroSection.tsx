@@ -8,7 +8,6 @@ import { ComingSoonDialog } from "@/components/ui/ComingSoonDialog";
 
 // Light theme images - romantic outdoor ceremonies with soft, warm tones
 const lightThemeImages = [
-  "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&q=80", // Elegant outdoor wedding with draped fabric and soft lighting
   "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1920&q=80", // Romantic outdoor ceremony with warm sunset tones
   "https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=1920&q=80", // Beautiful outdoor wedding venue with soft natural light
   "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&q=80", // Romantic outdoor ceremony (keeping this one)

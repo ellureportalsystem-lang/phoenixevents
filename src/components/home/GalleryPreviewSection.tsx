@@ -64,10 +64,10 @@ const GalleryPreviewSection = () => {
   };
 
   return (
-    <section className="py-24 bg-background">
+    <section className="py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <MotionSection className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6">
+        <MotionSection className="flex flex-col md:flex-row md:items-end md:justify-between mb-8 gap-4">
           <div className="space-y-4">
             <motion.p
               initial={{ opacity: 0, x: -20 }}
@@ -118,7 +118,7 @@ const GalleryPreviewSection = () => {
         </MotionSection>
 
         {/* Carousel Navigation Buttons */}
-        <div className="flex items-center justify-end gap-2 mb-4">
+        <div className="flex items-center justify-end gap-2 mb-3">
           <motion.button
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
@@ -157,13 +157,18 @@ const GalleryPreviewSection = () => {
         <div
           ref={scrollRef}
           onScroll={checkScroll}
-          className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="flex gap-4 overflow-x-auto scrollbar-hide pb-2"
+          style={{ 
+            scrollbarWidth: 'none', 
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
+            scrollBehavior: 'smooth'
+          }}
         >
           {galleryImages.map((image, index) => (
             <motion.div
               key={image.alt}
-              className="flex-shrink-0 w-[85vw] sm:w-[60vw] md:w-[45vw] lg:w-[32vw] snap-center"
+              className="flex-shrink-0 w-[85vw] sm:w-[60vw] md:w-[45vw] lg:w-[32vw]"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
